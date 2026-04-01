@@ -35,6 +35,7 @@ public class AuthController {
         return ResponseEntity.ok().body(authService.registerUser(request));
     }
 
+    @PostMapping("/login")
     public ResponseEntity<Map<String , Object>> login(@RequestBody LoginRequest request){
 
         User user = authService.login(request);
