@@ -1,7 +1,5 @@
 package com.payflow.auth.utile;
 
-import com.netflix.discovery.converters.Auto;
-import com.payflow.auth.service.CustomUserDetails;
 import com.payflow.auth.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

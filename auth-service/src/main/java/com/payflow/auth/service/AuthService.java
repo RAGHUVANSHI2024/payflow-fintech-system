@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AuthService {
 
@@ -34,14 +36,16 @@ public class AuthService {
     }
     public User login(LoginRequest request){
 
-        User user = authRepository.findByEmail(request.getEmail())
-                .orElseThrow(()-> new RuntimeException("Invalid Email Address"));
+        Optional<User> optionalUser = authRepository.findByEmail(request.getEmail());
+        if (optionalUser.isEmpty()) {
+            throw new IllegalArgumentException("Invalid email or password.");
+        }
 
-        if (passwordEncoder.matches(request.getPassword(), user.getPassword())){
-            return user;
+        User user = optionalUser.get();
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Invalid email or password.");
         }
-        else {
-            throw new RuntimeException("invalid credentials");
-        }
+        return user;
     }
 }
