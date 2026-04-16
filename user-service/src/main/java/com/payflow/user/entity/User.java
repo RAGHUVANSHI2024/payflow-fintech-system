@@ -3,29 +3,33 @@ package com.payflow.user.entity;
 import com.payflow.user.enums.Status;
 import jakarta.persistence.*;
 
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name ="user")
+@Table(name ="users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
-    @Column(unique = true,nullable = false)
+    @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(unique = true,nullable = false)
+    @Column(unique = true, nullable = false)
     private String phone;
 
-    private Status status;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Status status = Status.ACTIVE;
 
     private LocalDateTime createdAt;
 
-    private LocalDateTime updateDAt;
+    private LocalDateTime updatedAt;
 
     private String address;
 
@@ -78,11 +82,11 @@ public class User {
     }
 
     public LocalDateTime getUpdateDAt() {
-        return updateDAt;
+        return updatedAt;
     }
 
-    public void setUpdateDAt(LocalDateTime updateDAt) {
-        this.updateDAt = updateDAt;
+    public void setUpdateDAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public String getAddress() {
@@ -91,5 +95,14 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public void onCreate(){
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void onUpdate(){
+        this.updatedAt = LocalDateTime.now();
     }
 }

@@ -1,22 +1,22 @@
 package com.payflow.user.dto;
 
-import com.payflow.user.enums.Status;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
-public class UserResponse {
+public class CreateUserRequest {
 
-    private Long id;
+    @NotBlank
     private String name;
+
+    @Email
     private String email;
+
+    @NotBlank
     private String phone;
-    private Status status;
 
-    public Long getId() {
-        return id;
-    }
+    @NotBlank
+    private String address;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -41,10 +41,12 @@ public class UserResponse {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-    public void setStatus(Status status){
-        this.status=status;
+
+    public String getAddress() {
+        return address;
     }
-    public Status getStatus(){
-        return status;
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
