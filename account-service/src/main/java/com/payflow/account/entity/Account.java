@@ -23,14 +23,6 @@ public class Account {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
     @PrePersist
     public void onCreate() {
         this.createdAt = LocalDateTime.now();
