@@ -1,11 +1,13 @@
 package com.payflow.account.service;
 
 import com.netflix.discovery.converters.Auto;
+import com.payflow.account.dto.AccountResponse;
 import com.payflow.account.entity.Account;
 import com.payflow.account.repository.AccountRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -34,5 +36,11 @@ public class AccountService {
             throw new RuntimeException("Insufficient balance");
         }
         accountRepository.save(account);
+    }
+
+    public AccountResponse getAccount(Long userId){
+        Account acc = accountRepository.findByUserId(userId)
+                .orElseThrow(()-> new RuntimeException("Account not found!"));
+        return new AccountResponse(acc.getUserId(),acc.getBalance());
     }
 }
