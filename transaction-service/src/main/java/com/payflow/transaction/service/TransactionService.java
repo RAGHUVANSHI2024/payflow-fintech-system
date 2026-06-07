@@ -5,6 +5,7 @@ import com.payflow.transaction.dto.AccountResponse;
 import com.payflow.transaction.entity.Transaction;
 import com.payflow.transaction.enums.TransactionStatus;
 import com.payflow.transaction.feignClient.AccountClient;
+import com.payflow.transaction.feignClient.LedgerClient;
 import com.payflow.transaction.repository.TransactionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class TransactionService {
 
     @Autowired
     private AccountClient accountClient;
+
+    @Autowired
+    private LedgerClient ledgerClient;
 
     @Transactional
     public String transfer(Long senderId, Long receiverId, BigDecimal amount){
@@ -44,6 +48,7 @@ public class TransactionService {
             accountClient.debit(sender.getUserId(),amount);
             accountClient.credit(receiver.getUserId(),amount);
             txn.setStatus(TransactionStatus.SUCCESS);
+            ledgerClient.recordEntries(sender.getUserId(),receiver.getUserId(),amount,txn.getReferenceId());
         }
         catch (Exception e){
             try{
